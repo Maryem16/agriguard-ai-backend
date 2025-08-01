@@ -1,0 +1,31 @@
+entrypoint = "main.py"
+modules = ["python-3.11"]
+
+[nix]
+channel = "stable-25_05"
+packages = ["glibcLocales", "libxcrypt"]
+
+[unitTest]
+language = "python3"
+
+[gitHubImport]
+requiredFiles = [".replit", "replit.nix"]
+
+[deployment]
+run = ["uvicorn", "main:app", "--reload", "--host=0.0.0.0", "--port=8000"]
+deploymentTarget = "cloudrun"
+
+[workflows]
+runButton = "Run FastAPI Server"
+
+[[workflows.workflow]]
+name = "Run FastAPI Server"
+author = 40173522
+mode = "sequential"
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "uvicorn main:app --reload --host=0.0.0.0 --port=8000"
+
+[[ports]]
+localPort = 8000
